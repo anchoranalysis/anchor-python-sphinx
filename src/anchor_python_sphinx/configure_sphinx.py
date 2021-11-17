@@ -15,6 +15,8 @@ def configure(app, version: Optional[str] = None):
     app.config.copyright = "2021, Owen Feehan"
     app.config.author = "Owen Feehan"
 
+    _configure_version(app.config, version)
+
     # -- General configuration ---------------------------------------------------
 
     # See https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html#advanced-options

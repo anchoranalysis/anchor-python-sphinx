@@ -1,0 +1,21 @@
+anchor\_python\_sphinx package
+==============================
+
+Submodules
+----------
+
+anchor\_python\_sphinx.configure\_sphinx module
+-----------------------------------------------
+
+.. automodule:: anchor_python_sphinx.configure_sphinx
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: anchor_python_sphinx
+   :members:
+   :undoc-members:
+   :show-inheritance:

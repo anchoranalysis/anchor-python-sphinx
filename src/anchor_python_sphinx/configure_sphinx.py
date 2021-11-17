@@ -2,20 +2,18 @@ __author__ = "Owen Feehan"
 __copyright__ = "Owen Feehan"
 __license__ = "MIT"
 
+from typing import Optional
+from sphinx import config
+import re
 
-def configure(app):
+
+def configure(app, version: Optional[str] = None):
 
     # -- Project information -----------------------------------------------------
 
     app.config.project = "anchor_python_visualization"
     app.config.copyright = "2021, Owen Feehan"
     app.config.author = "Owen Feehan"
-
-    # The short X.Y version
-    app.config.version = "0.1"
-
-    # The full version, including alpha/beta/rc tags
-    app.config.release = "0.1"
 
     # -- General configuration ---------------------------------------------------
 
@@ -66,15 +64,16 @@ def configure(app):
     # The theme to use for HTML and HTML Help pages.  See the documentation for
     # a list of builtin themes.
     #
-    app.config.html_theme = "classic"
-
-    # Makes the docs occupy as much width as possible in the browser screen.
-    app.config.html_theme_options = {"sidebarwidth": "15%", "body_max_width": "80%"}
+    app.config.html_theme = "sphinx_rtd_theme"
 
     # Add any paths that contain custom static files (such as style sheets) here,
     # relative to this directory. They are copied after the builtin static files,
     # so a file named "default.css" will overwrite the builtin "default.css".
     app.config.html_static_path = ["_static"]
+
+    app.config.html_css_files = [
+        "custom.css",
+    ]
 
     # -- Extension configuration -------------------------------------------------
 
@@ -88,18 +87,39 @@ def configure(app):
     app.setup_extension("sphinx.ext.todo")
     app.setup_extension("sphinx.ext.intersphinx")
     app.setup_extension("autoapi.extension")
+    app.setup_extension("sphinx_rtd_theme")
 
-    app.connect("autoapi-skip-member", _autoapi_skip_member)
+    _configure_autoapi_skip(app, True, True)
 
 
-def _autoapi_skip_member(app, what, name, obj, skip, options):
-    """Exclude all private attributes, methods, and dunder methods from Sphinx."""
+def _configure_version(config: config.Config, version: Optional[str]) -> None:
+    """Assigns a version if it is specified."""
+    if version is not None:
+        # The short X.Y version
+        config.version = version
+        # The full version, including alpha/beta/rc tags
+        config.release = version
 
-    # Exclude sub-modules. Keep only top-level modules.
-    if what == "module" and ("." in str(obj)):
-        return True
 
-    import re
+def _configure_autoapi_skip(app, skip_private: bool, skip_submodules: bool) -> None:
+    """Configures the autoapi on what entities to skip (or not skip) when making the API documentaiton.
 
-    exclude = re.findall(r"\._.*", str(obj))
-    return skip or exclude
+    :param app: the Sphinx application.
+    :param skip_private: if True, private attributes, methods etc. are skipped.
+    :param skip_submodules: if True, submodules (any module containing a period) are skipped.
+    """
+
+    def _determine_whether_to_skip(app, what: str, name: str, obj, skip, options):
+        """Exclude all private attributes, methods, and dunder methods from Sphinx."""
+
+        # Exclude sub-modules. Keep only top-level modules.
+        if skip_submodules and what == "module" and ("." in str(obj)):
+            return True
+
+        if skip_private:
+            exclude = re.findall(r"\._.*", str(obj))
+            return skip or exclude
+        else:
+            return None
+
+    app.connect("autoapi-skip-member", _determine_whether_to_skip)

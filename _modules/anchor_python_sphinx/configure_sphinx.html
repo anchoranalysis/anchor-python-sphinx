@@ -52,17 +52,6 @@
 
     <span class="c1"># -- General configuration ---------------------------------------------------</span>
 
-    <span class="c1"># Add any Sphinx extension module names here, as strings. They can be</span>
-    <span class="c1"># extensions coming with Sphinx (named &#39;sphinx.ext.*&#39;) or your custom</span>
-    <span class="c1"># ones.</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;sphinx.ext.autodoc&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;sphinx.ext.viewcode&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;sphinx.ext.todo&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;sphinx.ext.intersphinx&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;autoapi.extension&quot;</span><span class="p">,</span>
-    <span class="p">]</span>
-
     <span class="c1"># See https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html#advanced-options</span>
     <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">autoapi_type</span> <span class="o">=</span> <span class="s2">&quot;python&quot;</span>
     <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">autoapi_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;../src&quot;</span><span class="p">]</span>
@@ -74,6 +63,7 @@
         <span class="s2">&quot;imported-members&quot;</span><span class="p">,</span>
     <span class="p">]</span>
     <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">autoapi_ignore</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;*docs/*&quot;</span><span class="p">,</span> <span class="s2">&quot;*test/*&quot;</span><span class="p">,</span> <span class="s2">&quot;build/*&quot;</span><span class="p">]</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">autoapi_add_toctree_entry</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">intersphinx_mapping</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;https://docs.python.org/3&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
@@ -124,7 +114,28 @@
     <span class="c1"># -- Options for todo extension ----------------------------------------------</span>
 
     <span class="c1"># If true, `todo` and `todoList` produce output, else they produce nothing.</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">todo_include_todos</span> <span class="o">=</span> <span class="kc">True</span></div>
+    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">todo_include_todos</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">app</span><span class="o">.</span><span class="n">setup_extension</span><span class="p">(</span><span class="s2">&quot;sphinx.ext.autodoc&quot;</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">setup_extension</span><span class="p">(</span><span class="s2">&quot;sphinx.ext.viewcode&quot;</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">setup_extension</span><span class="p">(</span><span class="s2">&quot;sphinx.ext.todo&quot;</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">setup_extension</span><span class="p">(</span><span class="s2">&quot;sphinx.ext.intersphinx&quot;</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">setup_extension</span><span class="p">(</span><span class="s2">&quot;autoapi.extension&quot;</span><span class="p">)</span>
+
+    <span class="n">app</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;autoapi-skip-member&quot;</span><span class="p">,</span> <span class="n">_autoapi_skip_member</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_autoapi_skip_member</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">skip</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Exclude all private attributes, methods, and dunder methods from Sphinx.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Exclude sub-modules. Keep only top-level modules.</span>
+    <span class="k">if</span> <span class="n">what</span> <span class="o">==</span> <span class="s2">&quot;module&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="kn">import</span> <span class="nn">re</span>
+
+    <span class="n">exclude</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\._.*&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">skip</span> <span class="ow">or</span> <span class="n">exclude</span>
 </pre></div>
 
           </div>

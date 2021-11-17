@@ -2,12 +2,13 @@ __author__ = "Owen Feehan"
 __copyright__ = "Owen Feehan"
 __license__ = "MIT"
 
-from typing import Optional
+from typing import Optional, Any
 from sphinx import config
+import sphinx
 import re
 
 
-def configure(app, version: Optional[str] = None):
+def configure(app: sphinx.Sphinx, version: Optional[str] = None) -> None:
 
     # -- Project information -----------------------------------------------------
 
@@ -103,25 +104,30 @@ def _configure_version(config: config.Config, version: Optional[str]) -> None:
         config.release = version
 
 
-def _configure_autoapi_skip(app, skip_private: bool, skip_submodules: bool) -> None:
-    """Configures the autoapi on what entities to skip (or not skip) when making the API documentaiton.
+def _configure_autoapi_skip(
+    app: sphinx.Sphinx, skip_private: bool, skip_submodules: bool
+) -> None:
+    """Configures the autoapi on what entities to skip (or not skip) when making the API documentation.
 
     :param app: the Sphinx application.
     :param skip_private: if True, private attributes, methods etc. are skipped.
     :param skip_submodules: if True, submodules (any module containing a period) are skipped.
     """
 
-    def _determine_whether_to_skip(app, what: str, name: str, obj, skip, options):
+    def determine_whether_to_skip(
+        app: sphinx.Sphinx, what: str, name: str, obj: Any, skip: bool, options
+    ) -> Optional[bool]:
         """Exclude all private attributes, methods, and dunder methods from Sphinx."""
 
-        # Exclude sub-modules. Keep only top-level modules.
+        # Maybe skip submodules
         if skip_submodules and what == "module" and ("." in str(obj)):
             return True
 
+        # Maybe skip private attributes, methods etc.
         if skip_private:
             exclude = re.findall(r"\._.*", str(obj))
             return skip or exclude
         else:
             return None
 
-    app.connect("autoapi-skip-member", _determine_whether_to_skip)
+    app.connect("autoapi-skip-member", determine_whether_to_skip)

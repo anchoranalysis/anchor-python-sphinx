@@ -19,17 +19,6 @@ def configure(app):
 
     # -- General configuration ---------------------------------------------------
 
-    # Add any Sphinx extension module names here, as strings. They can be
-    # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-    # ones.
-    app.config.extensions = [
-        "sphinx.ext.autodoc",
-        "sphinx.ext.viewcode",
-        "sphinx.ext.todo",
-        "sphinx.ext.intersphinx",
-        "autoapi.extension",
-    ]
-
     # See https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html#advanced-options
     app.config.autoapi_type = "python"
     app.config.autoapi_dirs = ["../src"]
@@ -41,6 +30,7 @@ def configure(app):
         "imported-members",
     ]
     app.config.autoapi_ignore = ["*docs/*", "*test/*", "build/*"]
+    app.config.autoapi_add_toctree_entry = True
 
     app.config.intersphinx_mapping = {
         "python": ("https://docs.python.org/3", None),
@@ -92,3 +82,24 @@ def configure(app):
 
     # If true, `todo` and `todoList` produce output, else they produce nothing.
     app.config.todo_include_todos = True
+
+    app.setup_extension("sphinx.ext.autodoc")
+    app.setup_extension("sphinx.ext.viewcode")
+    app.setup_extension("sphinx.ext.todo")
+    app.setup_extension("sphinx.ext.intersphinx")
+    app.setup_extension("autoapi.extension")
+
+    app.connect("autoapi-skip-member", _autoapi_skip_member)
+
+
+def _autoapi_skip_member(app, what, name, obj, skip, options):
+    """Exclude all private attributes, methods, and dunder methods from Sphinx."""
+
+    # Exclude sub-modules. Keep only top-level modules.
+    if what == "module" and ("." in str(obj)):
+        return True
+
+    import re
+
+    exclude = re.findall(r"\._.*", str(obj))
+    return skip or exclude

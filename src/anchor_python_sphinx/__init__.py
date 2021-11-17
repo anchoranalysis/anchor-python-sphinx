@@ -14,3 +14,5 @@ except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"
 finally:
     del version, PackageNotFoundError
+
+from .configure_sphinx import configure  # noqa: F401

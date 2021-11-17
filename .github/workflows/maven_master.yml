@@ -46,7 +46,7 @@ jobs:
     - name: Upload Sphinx as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: anchor-python-visualization-docs
+        name: anchor-python-sphinx-docs
         path: docs/_build/html
         
   sonarcloud:

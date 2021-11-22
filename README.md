@@ -25,7 +25,7 @@ See [Anchor image analysis](https://www.anchoranalysis.org/) and associated [Git
 
 3.	Optionally, create a file `docs/_static/custom.css` which will modify the default Read-the-Docs stylesheet to allow content spread more widely across the page:
 	
-	```
+	```css
 	.wy-nav-content {
 	    max-width: 75% !important;
 	}

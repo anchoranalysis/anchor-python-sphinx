@@ -14,7 +14,6 @@ See [Anchor image analysis](https://www.anchoranalysis.org/) and associated [Git
 
 2.	Create or change the `docs/conf.py` to be similar to:
 
-
 	```python
 	from anchor_python_sphinx import configure_sphinx
 	
@@ -24,15 +23,15 @@ See [Anchor image analysis](https://www.anchoranalysis.org/) and associated [Git
 	    configure_sphinx.configure(app, "name_of_project", version="2.1", author="John Doe")
 ```
 
-3. Optionally, create a file 'docs/_static/custom.css' which will modify the default Read-the-Docs stylesheet to allow content spread more widely across the page.
-
+3.	Optionally, create a file `docs/_static/custom.css` which will modify the default Read-the-Docs stylesheet to allow content spread more widely across the page:
+	
 	```
 	.wy-nav-content {
 	    max-width: 75% !important;
 	}
 	```
 
-4. Generate the Sphinx documentation in the usual way by e.g. `make html` in the `docs` subdirectory, or by `tox -e docs`.
+4.	Generate the Sphinx documentation in the usual way by e.g. `make html` in the `docs` subdirectory, or by `tox -e docs`.
 
 
 ## Author

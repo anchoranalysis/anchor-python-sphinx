@@ -21,6 +21,7 @@ _EXTENSIONS: List[str] = [
     "sphinx.ext.intersphinx",
     "autoapi.extension",
     "sphinx_rtd_theme",
+    "sphinx.ext.autosectionlabel",
 ]
 """The names of the extensions that are setup."""
 
@@ -38,6 +39,7 @@ def setup_and_configure_extensions(app: sphinx.application.Sphinx) -> None:
     _configure_theme(app.config)
     _configure_todo(app.config)
     _configure_intersphinx(app.config)
+    _configure_autosectionlabel(app.config)
 
 
 def _configure_theme(config: config.Config) -> None:
@@ -71,3 +73,8 @@ def _configure_intersphinx(config: config.Config) -> None:
         "matplotlib": ("https://matplotlib.org", None),
         "plotly": ("https://plotly.com/python-api-reference/", None),
     }
+
+
+def _configure_autosectionlabel(config: config.Config) -> None:
+    """Configures the autosectionlabel plugin."""
+    config.autosectionlabel_prefix_document = True

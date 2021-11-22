@@ -21,7 +21,7 @@ See [Anchor image analysis](https://www.anchoranalysis.org/) and associated [Git
 	# Importing Sphinx settings from the anchor_python_sphinx library
 	def setup(app):
 	    configure_sphinx.configure(app, "name_of_project", version="2.1", author="John Doe")
-```
+	```
 
 3.	Optionally, create a file `docs/_static/custom.css` which will modify the default Read-the-Docs stylesheet to allow content spread more widely across the page:
 	

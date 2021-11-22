@@ -1,11 +1,11 @@
 """Configures the Sphinx AutoAPI plugin."""
 
-import sphinx
+from sphinx import application
 import re
 from typing import Optional, Any
 
 
-def configure_auto_api(app: sphinx.application.Sphinx) -> None:
+def configure_auto_api(app: application.Sphinx) -> None:
     """Configures the AutoAPI plugin.
 
     :param app: the Sphinx application to configure.
@@ -26,7 +26,7 @@ def configure_auto_api(app: sphinx.application.Sphinx) -> None:
 
 
 def _configure_autoapi_skip(
-    app: sphinx.application.Sphinx, skip_private: bool, skip_submodules: bool
+    app: application.Sphinx, skip_private: bool, skip_submodules: bool
 ) -> None:
     """Configures the autoapi on what entities to skip (or not skip) when making the API documentation.
 
@@ -36,7 +36,7 @@ def _configure_autoapi_skip(
     """
 
     def determine_whether_to_skip(
-        app: sphinx.application.Sphinx,
+        app: application.Sphinx,
         what: str,
         name: str,
         obj: Any,

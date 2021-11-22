@@ -31,7 +31,10 @@ See [Anchor image analysis](https://www.anchoranalysis.org/) and associated [Git
 	}
 	```
 
-4.	Generate the Sphinx documentation in the usual way by e.g. `make html` in the `docs` subdirectory, or by `tox -e docs`.
+4.	Generate the Sphinx documentation in the usual way by e.g.
+
+- `make html` in the `docs/` subdirectory, or by:
+- `tox -e docs` in project root.
 
 
 ## Author

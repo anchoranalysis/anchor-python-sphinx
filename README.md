@@ -23,7 +23,7 @@ See [Anchor image analysis](https://www.anchoranalysis.org/) and associated [Git
 	    configure_sphinx.configure(app, "name_of_project", version="2.1", author="John Doe")
 	```
 
-3.	Optionally, create a file `docs/_static/custom.css` which will modify the default [Read-the-Docs Theme](https://sphinx-rtd-theme.readthedocs.io/en/stable/) stylesheets to let content spread more widely across the page:
+3.	Optionally, create a file `docs/_static/custom.css` which will modify the default [Read the Docs Theme](https://sphinx-rtd-theme.readthedocs.io/en/stable/) stylesheets to let content spread more widely across the page:
 	
 	```css
 	.wy-nav-content {
@@ -33,8 +33,8 @@ See [Anchor image analysis](https://www.anchoranalysis.org/) and associated [Git
 
 4.	Generate the Sphinx documentation in the usual way by e.g.
 
-- `make html` in the `docs/` subdirectory, or by:
-- `tox -e docs` in project root.
+- `make html` in the `docs/` subdirectory, or
+- `tox -e docs` in the project root.
 
 
 ## Author

@@ -1,10 +1,11 @@
 """Sets up and configures Sphinx extensions."""
 
-import sphinx
-from sphinx import config
-from ._auto_api import configure_auto_api
 from typing import List
 
+import sphinx
+from sphinx import config
+
+from ._auto_api import configure_auto_api
 
 _HTML_STATIC_PATH: str = "_static"
 """The directory (relative-path) where additional stylesheets and other HTML artifacts may be placed."""
@@ -18,6 +19,7 @@ _EXTENSIONS: List[str] = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinx.ext.todo",
+    "sphinx.ext.napoleon",  # to read google style doc-strings
     "sphinx.ext.intersphinx",
     "autoapi.extension",
     "sphinx_rtd_theme",
@@ -29,7 +31,8 @@ _EXTENSIONS: List[str] = [
 def setup_and_configure_extensions(app: sphinx.application.Sphinx) -> None:
     """Sets up all Sphinx extensions, and perform any additionally needed configuration.
 
-    :param app: the Sphinx application to configure.
+    Args:
+        app: the Sphinx application to configure.
     """
     for extension in _EXTENSIONS:
         app.setup_extension(extension)

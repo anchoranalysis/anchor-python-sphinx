@@ -3,7 +3,11 @@ from sphinx.config import Config
 
 
 def configure_general_scaffolding(config: Config) -> None:
-    """Configures general scaffolding."""
+    """Configures general scaffolding.
+
+    Args:
+        config: the configuration to configure.
+    """
 
     # Add any paths that contain templates here, relative to this directory.
     config.templates_path = ["_templates"]

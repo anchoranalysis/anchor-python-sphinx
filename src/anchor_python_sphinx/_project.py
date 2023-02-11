@@ -1,8 +1,9 @@
 """Configures project-related settings."""
 
-from sphinx import config
-from typing import Optional
 import datetime
+from typing import Optional
+
+from sphinx import config
 
 
 def configure_project(
@@ -13,10 +14,11 @@ def configure_project(
 ) -> None:
     """Configures projected-related configuration settings.
 
-    :param config: the configuration.
-    :param project_name: the name of the project, as displayed in the documentation.
-    :param version: an optional version for the documentation.
-    :param author: an optional author for the documentation.
+    Args:
+        config: the configuration.
+        project_name: the name of the project, as displayed in the documentation.
+        version: an optional version for the documentation.
+        author: an optional author for the documentation.
     """
     config.project = project_name
     year = datetime.datetime.now().year

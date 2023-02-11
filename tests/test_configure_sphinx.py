@@ -1,4 +1,5 @@
 from unittest import mock
+
 from anchor_python_sphinx import configure
 
 

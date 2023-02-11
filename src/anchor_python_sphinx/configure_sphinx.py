@@ -3,10 +3,12 @@ __copyright__ = "Owen Feehan"
 __license__ = "MIT"
 
 from typing import Optional
+
 import sphinx
+
+from ._extensions import setup_and_configure_extensions
 from ._project import configure_project
 from ._scaffolding import configure_general_scaffolding
-from ._extensions import setup_and_configure_extensions
 
 
 def configure(
@@ -17,10 +19,11 @@ def configure(
 ) -> None:
     """Applies the desired configuration, including plugins, to a Sphinx application.
 
-    :param app: the Sphinx application to configure.
-    :param project_name: the name of the project, as displayed in the documentation.
-    :param version: an optional version for the documentation.
-    :param author: an optional author for the documentation.
+    Args:
+        app: the Sphinx application to configure.
+        project_name: the name of the project, as displayed in the documentation.
+        version: an optional version for the documentation.
+        author: an optional author for the documentation.
     """
     configure_project(app.config, project_name, version, author)
 

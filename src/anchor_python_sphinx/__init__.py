@@ -15,4 +15,6 @@ except PackageNotFoundError:  # pragma: no cover
 finally:
     del version, PackageNotFoundError
 
-from .configure_sphinx import configure  # noqa: F401
+from anchor_python_sphinx.configure_sphinx import configure
+
+__all__ = ["configure"]
